@@ -1,0 +1,472 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Performance Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo">
+            <div class="logo-icon">S</div>
+            <h2>StudentAI</h2>
+        </div>
+
+        <p class="menu-title">MAIN MENU</p>
+
+        <nav>
+            <a href="#dashboard" class="nav-link active">
+                <span>▦</span> Dashboard
+            </a>
+
+            <a href="#prediction" class="nav-link">
+                <span>✦</span> Predict Performance
+            </a>
+
+            <a href="#features" class="nav-link">
+                <span>▤</span> Features
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="help-card">
+                <h4>StudentAI</h4>
+                <p>Smart student performance prediction using Machine Learning.</p>
+            </div>
+            <p class="version">Version 1.0</p>
+        </div>
+    </aside>
+<a href="#analytics" class="nav-link">
+    <span>📊</span> Analytics
+</a>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content" id="dashboard">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+            <div>
+                <h3>Student Performance</h3>
+                <p>AI-powered academic analytics</p>
+            </div>
+
+            <div class="profile">
+                <div class="avatar">S</div>
+                <div>
+                    <strong>Student Panel</strong>
+                    <small>Administrator</small>
+                </div>
+            </div>
+        </header>
+
+
+        <!-- WELCOME SECTION -->
+        
+
+           
+<!-- ANALYTICS SECTION -->
+<section id="analytics" class="analytics-section">
+
+    <div class="section-heading">
+        <div>
+            <span class="section-label">STUDENT INSIGHTS</span>
+            <h2>Analytics Overview</h2>
+            <p>Understand student academic performance.</p>
+        </div>
+        <span class="ml-badge">Live Dataset</span>
+    </div>
+
+    <!-- STATISTICS -->
+    <div class="analytics-stats">
+
+        <div class="analytics-stat-card">
+            <span>👨‍🎓</span>
+            <p>Total Students</p>
+            <h2>{{ total_students }}</h2>
+        </div>
+
+        <div class="analytics-stat-card">
+            <span>📊</span>
+            <p>Average Marks</p>
+            <h2>{{ average_marks }}</h2>
+        </div>
+
+        <div class="analytics-stat-card">
+            <span>📅</span>
+            <p>Average Attendance</p>
+            <h2>{{ average_attendance }}%</h2>
+        </div>
+
+    </div>
+
+    <!-- CHARTS -->
+    <div class="analytics-charts">
+
+        <div class="chart-card">
+            <h3>Performance Distribution</h3>
+            <p>Number of students in each category</p>
+            <div class="chart-container">
+                <canvas id="performanceChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <h3>Average Marks by Category</h3>
+            <p>Compare average marks across categories</p>
+            <div class="chart-container">
+                <canvas id="marksChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-card full-chart">
+            <h3>Study Hours vs Marks</h3>
+            <p>Relationship between study hours and marks</p>
+            <canvas id="studyChart"></canvas>
+            
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+
+            
+
+
+        <!-- PREDICTION SECTION -->
+        <section class="prediction-section" id="prediction">
+
+            <div class="section-heading">
+                <div>
+                    <span class="section-label">MACHINE LEARNING</span>
+                    <h2>Predict Student Performance</h2>
+                    <p>Enter student academic information below.</p>
+                </div>
+                <span class="ml-badge">Decision Tree Model</span>
+            </div>
+
+
+            <div class="prediction-card">
+
+                <div class="form-header">
+                    <div class="form-icon">📊</div>
+                    <div>
+                        <h3>Student Information</h3>
+                        <p>Fill in all three fields to generate a prediction.</p>
+                    </div>
+                </div>
+
+                <form method="POST" action="#prediction">
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label for="hours">Study Hours</label>
+                            <input
+                                type="number"
+                                id="hours"
+                                name="hours"
+                                placeholder="Example: 5"
+                                min="0"
+                                max="24"
+                                step="any"
+                                required>
+                            <small>Enter daily study hours (0–24).</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="attendance">Attendance (%)</label>
+                            <input
+                                type="number"
+                                id="attendance"
+                                name="attendance"
+                                placeholder="Example: 85"
+                                min="0"
+                                max="100"
+                                step="any"
+                                required>
+                            <small>Enter attendance percentage.</small>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="marks">Student Marks</label>
+                            <input
+                                type="number"
+                                id="marks"
+                                name="marks"
+                                placeholder="Example: 78"
+                                min="0"
+                                max="100"
+                                step="any"
+                                required>
+                            <small>Enter marks (0–100).</small>
+                        </div>
+
+                    </div>
+
+                    <button type="submit" class="predict-btn">
+                        ✦ Predict Performance
+                    </button>
+
+                </form>
+
+
+                <!-- PREDICTION RESULT -->
+                {% if prediction is not none %}
+
+                <div class="result-box">
+                    <span class="result-icon">✓</span>
+                    <div>
+                        <small>YOUR PREDICTION RESULT</small>
+                        <h2>{{ prediction }}</h2>
+                        <p>Prediction generated by the ML model.</p>
+                    </div>
+                </div>
+
+                {% endif %}
+
+            </div>
+        </section>
+
+
+        <!-- FEATURES SECTION -->
+        <section class="features-section" id="features">
+
+            <div class="section-heading">
+                <div>
+                    <span class="section-label">OUR CAPABILITIES</span>
+                    <h2>Project Features</h2>
+                </div>
+            </div>
+
+            <div class="features-grid">
+
+                <div class="feature-card">
+                    <span>🤖</span>
+                    <h3>Machine Learning</h3>
+                    <p>Decision Tree classification for performance prediction.</p>
+                </div>
+
+                <div class="feature-card">
+                    <span>📚</span>
+                    <h3>Academic Analysis</h3>
+                    <p>Uses study hours, attendance and marks as input.</p>
+                </div>
+
+                <div class="feature-card">
+                    <span>⚡</span>
+                    <h3>Instant Prediction</h3>
+                    <p>Get a prediction after submitting student information.</p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+        <footer>
+            <p>© 2026 StudentAI | Student Performance Prediction System</p>
+            <p>Developed using Python, Flask and Machine Learning</p>
+        </footer>
+
+    </main>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<scrip>
+
+// Performance Distribution Chart
+new Chart(document.getElementById("performanceChart"), {
+    type: "doughnut",
+
+    data: {
+        labels: {{ performance_labels | tojson }},
+        datasets: [{
+            data: {{ performance_values | tojson }},
+            backgroundColor: [
+                "#2563eb",
+                "#22c55e",
+                "#f59e0b",
+                "#ef4444"
+            ],
+            borderWidth: 2
+        }]
+    },
+
+    options: {
+        responsive: true,
+        maintainAspectRatio: true
+    }
+});
+
+
+// Average Marks Chart
+new Chart(document.getElementById("marksChart"), {
+    type: "bar",
+
+    data: {
+        labels: {{ marks_labels | tojson }},
+        datasets: [{
+            label: "Average Marks",
+            data: {{ marks_values | tojson }},
+            backgroundColor: "#3b82f6",
+            borderRadius: 8
+        }]
+    },
+
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                max: 100
+            }
+        }
+    }
+});
+<sc>
+
+// Study Hours vs Marks Chart
+
+const studyData = {{ study_points | tojson }};
+
+new Chart(document.getElementById("studyChart"), {
+    type: "scatter",
+
+    data: {
+        datasets: [{
+            label: "Student Marks",
+            data: studyData.map(item => ({
+                x: item.hours,
+                y: item.marks
+            })),
+            backgroundColor: "#2563eb",
+            pointRadius: 7
+        }]
+    },
+
+    options: {
+        responsive: true,
+
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: "Study Hours"
+                }
+            },
+
+            y: {
+                beginAtZero: true,
+                max: 100,
+                title: {
+                    display: true,
+                    text: "Marks"
+                }
+            }
+        }
+    }
+});
+<scrip>
+
+// Study Hours vs Marks Chart
+
+const studyData = {{ study_points | tojson }};
+
+new Chart(document.getElementById("studyChart"), {
+    type: "scatter",
+
+    data: {
+        datasets: [{
+            label: "Student Marks",
+            data: studyData.map(item => ({
+                x: item.hours,
+                y: item.marks
+            })),
+            backgroundColor: "#2563eb",
+            pointRadius: 7
+        }]
+    },
+
+    options: {
+        responsive: true,
+
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: "Study Hours"
+                }
+            },
+
+            y: {
+                beginAtZero: true,
+                max: 100,
+                title: {
+                    display: true,
+                    text: "Marks"
+                }
+            }
+        }
+    }
+});
+
+<script>
+
+// Study Hours vs Marks Chart
+
+const studyData = {{ study_points | tojson }};
+
+new Chart(document.getElementById("studyChart"), {
+    type: "scatter",
+
+    data: {
+        datasets: [{
+            label: "Student Marks",
+            data: studyData.map(item => ({
+                x: item.hours,
+                y: item.marks
+            })),
+            backgroundColor: "#2563eb",
+            pointRadius: 7
+        }]
+    },
+
+    options: {
+        responsive: true,
+
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: "Study Hours"
+                }
+            },
+
+            y: {
+                beginAtZero: true,
+                max: 100,
+                title: {
+                    display: true,
+                    text: "Marks"
+                }
+            }
+        }
+    }
+});
+
+</script>
+</body>
+</html>
